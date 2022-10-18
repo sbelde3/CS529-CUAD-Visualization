@@ -1,0 +1,7 @@
+Task(Hours)
+- Data Understanding and Project knowledge transfer (3)
+- Data cleaning, transformation and additional preprocessing (4)
+- Client meetings and requirement analysis(2)
+- Project setup and gathering dependencies(2)
+- Building the First iteration of visualizations based on requirements(4)
+- Miscellaneous (1)
