@@ -1,0 +1,7 @@
+Task(Hours)
+-> Going through contracts glossary to understand the terms in a legal contract(4)
+   Link : https://www.artslaw.com.au/images/uploads/Contract-_a_glossary_of_jargon_06.01.2016.pdf
+-> Cleaning and data-preprocessing(4)
+-> Data and Task abstraction(3)
+-> Figuring out layout and stylings to be used through out the project(2)
+-> Creating first module with data loaders(3)
