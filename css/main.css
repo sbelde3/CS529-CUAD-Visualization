@@ -1,0 +1,33 @@
+.title{
+    text-align: center;
+}
+
+.row-full{
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    margin-left: -50vw;
+    left: 50%;
+   }
+
+#firstColumn {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+    border: 2px dotted rgb(245, 220, 140);
+}
+
+#secondColumn {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+    border: 2px dotted rgb(245, 220, 140);
+}
+
+#thirdColumn {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+    border: 2px dotted rgb(245, 220, 140);
+}
+
