@@ -31,3 +31,40 @@
     border: 2px dotted rgb(245, 220, 140);
 }
 
+#viz{
+    margin: 0px;
+    overflow: hidden;
+}
+
+.globe{
+    fill: #93c9e5;
+}
+
+.country {
+    fill: #f1f1f1;
+    stroke: black;
+    stroke-width: 0.1;
+    stop-opacity: 0.1; 
+}
+
+.country:hover{
+    fill: #9b9b9b;
+}
+
+.circles{
+    opacity: 0.5;
+    stroke-width: 0.1;
+    stroke: #898989;
+}
+
+.graticule {
+    fill: none;
+    stroke: #dadada;
+    stroke-width: 1;
+    stroke-dasharray: 1,1;
+  }
+
+.missing-counts{
+    fill: #3b5d75;
+    /*opacity: 0.5; */
+  }
