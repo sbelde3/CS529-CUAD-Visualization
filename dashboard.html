@@ -174,9 +174,9 @@
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
-                                    <div class="abcde">
+                                    <div class="timeline-viz">
                                         <a href="thirdColumn.html">Time line dummy</a>
-                                        <img width="350" height="300" src="fig/timeline_viz.jpg" alt="abvcd">
+                                        <img id="timeline" width="350" height="300" src="fig/timeline_viz.jpg" alt="abvcd">
                                         <!-- <canvas id="myPieChart"></canvas> -->
                                     </div>
                                     <div class="mt-4 text-center small">
@@ -202,17 +202,23 @@
 
     <script>
 
+        const srcImg  = document.getElementById('timeline');
+
+        console.log(srcImg)
+        srcImg.src = "fig/timeline_viz.jpg"
+
         // d3.select(".abcd")
         //   .append("svg")
 
 
-        d3.select(".abcd")
-        .append("svg:img")
-        //.attr('x', -9)
-        //.attr('y', -12)
-        .attr('width', 50)
-        .attr('height', 60)
-        .attr("xlink:src", "fig/timeline_viz.jpg")
+        // d3.select(".abcd")
+        // .select("svg:img")
+        // //.attr('x', -9)
+        // //.attr('y', -12)
+        // //.attr('width', 350)
+        // //.attr('height', 300)
+        // .attr("xlink:src", "fig/timeline_viz1.jpg")
+        // .attr("alt","abcd")
           // .image('fig/timeline.js', { crossOrigin: "anonymous" }).then((img) => {
           //   console.log(11);
           // });
