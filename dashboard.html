@@ -5,13 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <!-- <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css"> -->
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="css/bootstrapV4.6.css" rel="stylesheet">
+    <script src="lib/d3.min.js"></script>
+
 </head>
 <body id="page-top">
     <div id="wrapper">
@@ -172,11 +174,13 @@
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
-                                    <div class="chart-pie pt-4 pb-2">
-                                        <canvas id="myPieChart"></canvas>
+                                    <div class="abcde">
+                                        <a href="thirdColumn.html">Time line dummy</a>
+                                        <img width="350" height="300" src="fig/timeline_viz.jpg" alt="abvcd">
+                                        <!-- <canvas id="myPieChart"></canvas> -->
                                     </div>
                                     <div class="mt-4 text-center small">
-                                        <span class="mr-2">
+                                        <!-- <span class="mr-2">
                                             <i class="fas fa-circle text-primary"></i> Direct
                                         </span>
                                         <span class="mr-2">
@@ -184,7 +188,7 @@
                                         </span>
                                         <span class="mr-2">
                                             <i class="fas fa-circle text-info"></i> Referral
-                                        </span>
+                                        </span> -->
                                     </div>
                                 </div>
                             </div>
@@ -194,6 +198,25 @@
             </div>
         </div>
     </div>
-    
+
+
+    <script>
+
+        // d3.select(".abcd")
+        //   .append("svg")
+
+
+        d3.select(".abcd")
+        .append("svg:img")
+        //.attr('x', -9)
+        //.attr('y', -12)
+        .attr('width', 50)
+        .attr('height', 60)
+        .attr("xlink:src", "fig/timeline_viz.jpg")
+          // .image('fig/timeline.js', { crossOrigin: "anonymous" }).then((img) => {
+          //   console.log(11);
+          // });
+
+    </script>
 </body>
 </html>

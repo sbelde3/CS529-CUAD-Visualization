@@ -1,16 +1,22 @@
 function getRandomData(ordinal = false) {
 
     const NGROUPS = 6,
-        MAXLINES = 15,
-        MAXSEGMENTS = 20,
-        MAXCATEGORIES = 20,
+        MAXLINES = 5,
+        MAXSEGMENTS = 5,
+        MAXCATEGORIES = 4,
         MINTIME = new Date(2013,2,21);
 
-    const nCategories = Math.ceil(Math.random()*MAXCATEGORIES),
-        categoryLabels = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+    //const nCategories = Math.ceil(Math.random()*MAXCATEGORIES),
+    const nCategories = 5,
+        categoryLabels = ['Contract Signing Period','Contract Negotiation Period','Contract Re-Negotiation Period','Contract Relapse Period','Contract Expiry Period'];
+
+    console.log([...Array(NGROUPS).keys()].map(i => ({
+        group: 'group' + (i+1),
+        data: getGroupData()
+    })))
 
     return [...Array(NGROUPS).keys()].map(i => ({
-        group: 'group' + (i+1),
+        group: 'Group ' + (i+1),
         data: getGroupData()
     }));
 
@@ -19,7 +25,7 @@ function getRandomData(ordinal = false) {
     function getGroupData() {
 
         return [...Array(Math.ceil(Math.random()*MAXLINES)).keys()].map(i => ({
-            label: 'label' + (i+1),
+            label: 'Contract ID ' + (i+1),
             data: getSegmentsData()
         }));
 
