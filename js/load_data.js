@@ -80,25 +80,34 @@ const plot_By_Country = function(contractsByCountryCsv) {
 
 
       // ###### Adding Missing Fields BarPlot #######
-      var missingCounts = [],
+      var contractCounts = {}, //year Wise Counts
           dates = [],      margin = { top: 0, right: 0, bottom: 30, left: 20 },
           height = 150 - margin.top - margin.bottom,
           width = 960 - margin.left - margin.right;
 
       var xScale,yScale,xAxisTicks,xAxisValues,extent,
           yAxisTicks,yAxisValues,xGuide,yGuide,tempColor,
-          countsChart,tooltip;
+          countsChart,tooltip,yearWiseCounts,allYears;
+          
 
       for (var i = 0; i<data.length; i++) {
-        missingCounts.push(data[i].missingFields);
-        dates.push( new Date(data[i].AgreementDate) );
+        var new_date = new Date(data[i].AgreementDate)
+        dates.push(new_date);
+        contractCounts[new_date.getFullYear()] = 0;
       }
+
       dates = dates.sort((a,b)=>a.getTime()-b.getTime());
-      //console.log(missingCounts)
-      //console.log(dates)
+
+      for (var i=0;i<dates.length;i++){
+        contractCounts[dates[i].getFullYear()] = contractCounts[dates[i].getFullYear()]+1
+      }
+
+
+      yearWiseCounts = Object.values(contractCounts)
+      allYears = Object.keys(contractCounts)
 
       xScale = d3.scaleBand()
-      .domain(missingCounts)
+      .domain(yearWiseCounts)
       .paddingInner(.1)
       .paddingOuter(.1)
       .range([0, width])
@@ -106,17 +115,18 @@ const plot_By_Country = function(contractsByCountryCsv) {
       xAxisValues = d3.scaleTime()
       .domain([dates[0],dates[(dates.length-1)]])
       .range([0, width])
-  
+
+      console.log(xAxisValues.domain())
       xAxisTicks = d3.axisBottom(xAxisValues)
-      .ticks(d3.timeDay.every(100))
+      .ticks(d3.timeDay.every(1))
 
 
       yScale = d3.scaleLinear()
-      .domain([0, d3.max(missingCounts.map(function(d){return parseInt(d)}))])
+      .domain([0, d3.max(yearWiseCounts.map(function(d){return parseInt(d)}))])
       .range([0,height]);
 
       yAxisValues = d3.scaleLinear()
-      .domain([0,d3.max(missingCounts.map(function(d){return parseInt(d)}))])
+      .domain([0,d3.max(yearWiseCounts.map(function(d){return parseInt(d)}))])
       .range([height,0]);
   
       yAxisTicks = d3.axisLeft(yAxisValues)
@@ -126,9 +136,9 @@ const plot_By_Country = function(contractsByCountryCsv) {
       countsChart = map.append('g')
       .attr('transform',
         'translate(' + margin.left + ',' + (480-height) + ')')
-      .selectAll('rect').data(missingCounts)
+      .selectAll('rect').data(yearWiseCounts)
       .enter().append('rect')
-        .attr("class","missing-counts")
+        .attr("class","year-wise-counts")
         //.attr('fill', '#2D8BCF')
         .attr('width', function(d) {
           return xScale.bandwidth();
@@ -197,17 +207,14 @@ const plot_By_Country = function(contractsByCountryCsv) {
       map.call(d3.brushX()
                   .extent([ [20,480-height], [960,480] ])
                   .on("start end", updateMap))
-
       
-
       function updateMap(extent){
-        const x =Math.floor(((extent.selection[0]-20)*350)/960);
-        const y =Math.floor(((extent.selection[1]-20)*350)/960);
-        
+        const x =Math.floor(((extent.selection[0]-20)*allYears.length)/960);
+        const y =Math.floor(((extent.selection[1]-1)*allYears.length)/960);
         mapG.selectAll("circle")
               .style("display",function(d){
-                var cur_date = new Date(d.AgreementDate);
-                return cur_date>=dates[x] && cur_date<dates[y] ? "inline":"none"});
+                var cur_year = (new Date(d.AgreementDate)).getFullYear();
+                return cur_year>=allYears[x] && cur_year<allYears[y]? "inline":"none"});
       }
 
     });
