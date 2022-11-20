@@ -37,9 +37,9 @@ const plot_By_Country = function(contractsByCountryCsv) {
 
 
     // For Zooming
-    map.call(d3.zoom().on('zoom', (event,d) => {
+/*     map.call(d3.zoom().on('zoom', (event,d) => {
           mapG.attr('transform', event.transform);
-        })); 
+        }));  */
         
     // var lines = mapG.selectAll('path').data([graticule()]);
     //     lines.enter().append('path').classed('graticule', true);
@@ -85,9 +85,9 @@ const plot_By_Country = function(contractsByCountryCsv) {
           height = 150 - margin.top - margin.bottom,
           width = 960 - margin.left - margin.right;
 
-      var xScale,yScale,xAxisTicks,xAxisValues,
-          yAxisTicks,yAxisValues,xGuide,yGuide,
-          countsChart;
+      var xScale,yScale,xAxisTicks,xAxisValues,extent,
+          yAxisTicks,yAxisValues,xGuide,yGuide,tempColor,
+          countsChart,tooltip;
 
       for (var i = 0; i<data.length; i++) {
         missingCounts.push(data[i].missingFields);
@@ -121,6 +121,7 @@ const plot_By_Country = function(contractsByCountryCsv) {
       yAxisTicks = d3.axisLeft(yAxisValues)
       .ticks(10)
 
+
       countsChart = map.append('g')
       .attr('transform',
         'translate(' + margin.left + ',' + (480-height) + ')')
@@ -137,7 +138,38 @@ const plot_By_Country = function(contractsByCountryCsv) {
         })
         .attr('y', height);
 
-/*       var brush = countsChart.call(d3.brush()
+        
+      tooltip = d3.select('body')
+        .append('div')
+        .style('position', 'absolute')
+        .style('padding', '0 8px')
+        .style('background', 'white')
+        .style('opacity', 0);
+      
+        
+      countsChart.on('mouseover', function(event,d) {
+          const[x, y] = d3.pointer(event);
+          tooltip.transition().duration(200)
+            .style('opacity', .9)
+          tooltip.html(
+            '<div style="font-size: 1rem; font-weight: bold">' +
+              d + '</div>'
+          )
+            .style('left', (x+180) + 'px')
+            .style('top', (y+480) + 'px')
+          tempColor = this.style.fill;
+          d3.select(this)
+            .style('fill', 'yellow')
+        })
+  
+        .on('mouseout', function(d) {
+          tooltip.html('')
+          d3.select(this)
+            .style('fill', tempColor)
+        });
+        //.append('title').text("d=>yScale(d)");
+
+          /* var brush = countsChart.call(d3.brush()
                               .extent([0,0],[width,height])) */
       
       yGuide = map.append('g')
@@ -159,7 +191,17 @@ const plot_By_Country = function(contractsByCountryCsv) {
         return i * 5;
       })
       .duration(500)
-      .ease(d3.easeBounceOut)
+      .ease(d3.easeBounceOut);
+      
+      map.call(d3.brushX()
+                  .extent([ [20,480-height], [960,480] ])
+                  .on("start end", updateMap))
+      function updateMap(extent){
+        console.log(extent.selection)
+        const x =Math.floor(((extent.selection[0]-20)*350)/960);
+        const y =Math.floor(((extent.selection[1]-20)*350)/960);
+        console.log(dates[x],dates[y])
+      }
     });
 
   });

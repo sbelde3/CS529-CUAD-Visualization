@@ -12,17 +12,23 @@
     <script  src="js/load_data.js"></script>
     <script src="js/main.js"></script>
   </head>
+  
   <body onload="App.start();">
 
-    <div class="title"><h2>Contracts By Country</h2></div>
+    <div class="title">
+      <h2>Contracts By Country</h2>
+    </div>
+
     <div class="container" style="display: flex;justify-content: center;">
-      <div id="viz" style="margin: 0 auto;">
-        <svg width="960" height="500"></svg>
+      <div id="viz" class="svg-container" style="margin: 0 auto;">
+        <svg class = "svg-content-responsive" viewBox="0 0 960 500"></svg>
       </div>
     </div>
+
     <div class="container" style="display: flex;justify-content: center;">
-      <div id="viz2" style="margin: 0 auto;">
-      </div>
+      <div id="viz2" style="margin: 0 auto;"></div>
     </div>
+
   </body>
+
 </html>
