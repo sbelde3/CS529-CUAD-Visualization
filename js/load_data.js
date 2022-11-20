@@ -93,6 +93,7 @@ const plot_By_Country = function(contractsByCountryCsv) {
         missingCounts.push(data[i].missingFields);
         dates.push( new Date(data[i].AgreementDate) );
       }
+      dates = dates.sort((a,b)=>a.getTime()-b.getTime());
       //console.log(missingCounts)
       //console.log(dates)
 
@@ -107,7 +108,7 @@ const plot_By_Country = function(contractsByCountryCsv) {
       .range([0, width])
   
       xAxisTicks = d3.axisBottom(xAxisValues)
-      .ticks(d3.timeDay.every(1))
+      .ticks(d3.timeDay.every(100))
 
 
       yScale = d3.scaleLinear()
@@ -192,16 +193,23 @@ const plot_By_Country = function(contractsByCountryCsv) {
       })
       .duration(500)
       .ease(d3.easeBounceOut);
-      
+
       map.call(d3.brushX()
                   .extent([ [20,480-height], [960,480] ])
                   .on("start end", updateMap))
+
+      
+
       function updateMap(extent){
-        console.log(extent.selection)
         const x =Math.floor(((extent.selection[0]-20)*350)/960);
         const y =Math.floor(((extent.selection[1]-20)*350)/960);
-        console.log(dates[x],dates[y])
+        
+        mapG.selectAll("circle")
+              .style("display",function(d){
+                var cur_date = new Date(d.AgreementDate);
+                return cur_date>=dates[x] && cur_date<dates[y] ? "inline":"none"});
       }
+
     });
 
   });
