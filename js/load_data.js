@@ -37,14 +37,9 @@ const plot_By_Country = function(contractsByCountryCsv) {
 
 
     // For Zooming
-/*     map.call(d3.zoom().on('zoom', (event,d) => {
+    /*map.call(d3.zoom().on('zoom', (event,d) => {
           mapG.attr('transform', event.transform);
         }));  */
-        
-    // var lines = mapG.selectAll('path').data([graticule()]);
-    //     lines.enter().append('path').classed('graticule', true);
-    //     lines.attr('d', pathGenerator);
-    //     lines.exit().remove();
 
     // Drawing the countries on globe
     mapG.selectAll('path')

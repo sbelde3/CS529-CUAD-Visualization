@@ -19,6 +19,8 @@
     <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.min.js"></script>
     <script  src="js/load_data.js"></script>
     <script src="js/main.js"></script>
+    <script src="//unpkg.com/timelines-chart@2"></script>
+  	<script src="js/timeline.js"></script>
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/main.css" rel="stylesheet">
@@ -318,7 +320,7 @@
                                     </div>
                                 </div>
                                 <!-- Card Body -->
-                                <div class="card-body" style="height: 70vh;">
+                                <div class="card-body" style="height: 60vh;">
                                     <div class="chart-area">
                                       <a href="firstColumn.html">World Map Viz</a>
                                       <div class="container" style="display: flex;justify-content: center;">
@@ -331,9 +333,11 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div  class="row">
 
                         <!-- Pie Chart -->
-                        <div class="col-xl-4 col-lg-5">
+                        <div class="col-xl-12 col-lg-9">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div
@@ -355,10 +359,18 @@
                                     </div>
                                 </div>
                                 <!-- Card Body -->
-                                <div class="card-body">
+                                <div class="card-body" style="width: 100vh;">
                                     <div class="timeline-viz">
                                         <a href="thirdColumn.html">Time line dummy</a>
-                                        <img id="timeline" width="350" height="300" src="fig/timeline_viz.jpg" alt="abvcd">
+                                        <!-- <img id="timeline" width="350" height="300" src="fig/timeline_viz.jpg" alt="abvcd"> -->
+                                        <div id="myPlot" ></div>
+
+                                        <script>
+                                            TimelinesChart()
+                                                .data(getRandomData(true))
+                                                .zQualitative(true)
+                                                (document.getElementById('myPlot'));
+                                        </script>
                                         <!-- <canvas id="myPieChart"></canvas> -->
                                     </div>
                                     <div class="mt-4 text-center small">
