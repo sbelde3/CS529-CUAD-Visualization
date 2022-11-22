@@ -3,7 +3,7 @@
 /* Get or create the application global variable */
 var App = App || {};
 
-var contractsByCountryCsv = "../data/Contracts_MissingFields_info.csv";
+var contractsByCountryCsv = "./data/Contracts_MissingFields_info.csv";
 /* IIFE to initialize the main entry of the application*/
 (function() {
 
