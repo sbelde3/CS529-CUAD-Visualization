@@ -193,7 +193,7 @@ const plot_By_Country = function(contractsByCountryCsv) {
         // set the dimensions and margins of the graph
         var margin = {top: 10, right: 10, bottom: 10, left: 10},
             width = 500 - margin.left - margin.right,
-            height = 500 - margin.top - margin.bottom;
+            height = 400 - margin.top - margin.bottom;
 
         // append the svg object to the body of the page
         var svg = d3.select("#my_dataviz").append("svg").attr("id","wordcloud")
@@ -249,10 +249,10 @@ const plot_By_Country = function(contractsByCountryCsv) {
                   {word: "NoticePeriod", size: "15",color:"#3c813c"}, 
                   {word: "TOC", size: "15",color:"#3c813c"}]
 
-      let static_terms = [{text:"FileName",posX:"250",posY:"20",color:"#7288a3"},
+      let static_terms = [{text:"FileName",posX:"250",posY:"20",color:"rgb(0 111 247)"},
                           {text:"DocumentName",posX:"250",posY:"40",color:"#7288a3"},
-                          {text:"Party1",posX:"250",posY:"60",color:"#0a0a0a"},
-                           {text:"Party2",posX:"250",posY:"80",color:"#0a0a0a"},
+                          {text:"Party1",posX:"250",posY:"60",color:"rgb(165 151 73 / 66%)"},
+                           {text:"Party2",posX:"250",posY:"80",color:"rgb(165 151 73 / 66%)"},
                            ]
 
       wordCloud(terms,static_terms)
@@ -269,10 +269,10 @@ const plot_By_Country = function(contractsByCountryCsv) {
                   {word: "RenewalTerm", size: "15",color: d.isRenewalTermMissing==="False"? "#3c813c":"#ff6161"}, 
                   {word: "NoticePeriod", size: "15",color: d.isNoticePeriodMissing==="False"? "#3c813c":"#ff6161"}, 
                   {word: "TOC", size: "15",color: d.isTOC==="False"? "#3c813c":"#ff6161"} ]
-        static_terms = [{text:d.Filename,posX:"250",posY:"20",color:"#7288a3"},
+        static_terms = [{text:d.Filename,posX:"250",posY:"20",color:"rgb(0 111 247)"},
                         {text:d.documentName,posX:"250",posY:"40",color:"#7288a3"},
-                        {text:d.party1,posX:"250",posY:"60",color:"#0a0a0a"},
-                         {text:d.party2,posX:"250",posY:"80",color:"#0a0a0a"},]
+                        {text:d.party1,posX:"250",posY:"60",color:"rgb(165 151 73 / 66%)"},
+                         {text:d.party2,posX:"250",posY:"80",color:"rgb(165 151 73 / 66%)"},]
         wordCloud(terms,static_terms)
       }
 
