@@ -54,24 +54,29 @@ const plot_By_Country = function(contractsByCountryCsv) {
     // Loading the contracts on the world map as circles
     d3.csv(contractsByCountryCsv).then ((data) =>{
       //console.log(data)
-      mapG.selectAll("circle")
-      .data(data)
-      .enter()
-      .append("circle")
-      .attr("cx", function(d) {
-        return projection([d.lng, d.lat])[0];
-      })
-      .attr("cy", function(d) {
-        return projection([d.lng, d.lat])[1];
-      })
-      .attr("r", function(d) {
-        return 3;
-      }).attr("class", "circles")
-      .attr("fill",function(d){return d.isMissing==="True"? "#3c813c":"#ff6161"})
-      //.style("display",function(d){return d.isMissing==="True"? "inline":"none"})
-      .append('title').text(d=>d.Filename)
+      function contractCircles(data){
+        mapG.selectAll("circle")
+        .data(data)
+        .enter()
+        .append("circle").on('click',d=>updateWordcloud(d.target.__data__.Filename))
+        .attr("cx", function(d) {
+          return projection([d.lng, d.lat])[0];
+        })
+        .attr("cy", function(d) {
+          return projection([d.lng, d.lat])[1];
+        })
+        .attr("r", function(d) {
+          return 3;
+        }).attr("class", "circles")
+        .attr("fill",function(d){return d.isMissing==="True"? "#3c813c":"#ff6161"})
+        //.style("display",function(d){return d.isMissing==="True"? "inline":"none"})
+        .append('title').text(d=>d.Filename)
+      }
+    contractCircles(data)
 
-
+    function updateWordcloud(Filename){
+      console.log(Filename)
+    }
 
 
       // ###### Adding Missing Fields BarPlot #######
@@ -111,7 +116,6 @@ const plot_By_Country = function(contractsByCountryCsv) {
       .domain([dates[0],dates[(dates.length-1)]])
       .range([0, width])
 
-      console.log(xAxisValues.domain())
       xAxisTicks = d3.axisBottom(xAxisValues)
       .ticks(d3.timeDay.every(1))
 
@@ -145,39 +149,7 @@ const plot_By_Country = function(contractsByCountryCsv) {
         .attr('y', height);
 
         
-      tooltip = d3.select('body')
-        .append('div')
-        .style('position', 'absolute')
-        .style('padding', '0 8px')
-        .style('background', 'white')
-        .style('opacity', 0);
-      
-        
-      countsChart.on('mouseover', function(event,d) {
-          const[x, y] = d3.pointer(event);
-          tooltip.transition().duration(200)
-            .style('opacity', .9)
-          tooltip.html(
-            '<div style="font-size: 1rem; font-weight: bold">' +
-              d + '</div>'
-          )
-            .style('left', (x+180) + 'px')
-            .style('top', (y+480) + 'px')
-          tempColor = this.style.fill;
-          d3.select(this)
-            .style('fill', 'yellow')
-        })
-  
-        .on('mouseout', function(d) {
-          tooltip.html('')
-          d3.select(this)
-            .style('fill', tempColor)
-        });
-        //.append('title').text("d=>yScale(d)");
 
-          /* var brush = countsChart.call(d3.brush()
-                              .extent([0,0],[width,height])) */
-      
       yGuide = map.append('g')
         .attr('transform', 'translate(20,'+(height+240)+')')
         .call(yAxisTicks)
@@ -206,10 +178,20 @@ const plot_By_Country = function(contractsByCountryCsv) {
       function updateMap(extent){
         const x =Math.floor(((extent.selection[0]-20)*allYears.length)/960);
         const y =Math.floor(((extent.selection[1]-1)*allYears.length)/960);
-        mapG.selectAll("circle")
+        /*mapG.selectAll("circle").on('click',d=>console.log(d))
               .style("display",function(d){
                 var cur_year = (new Date(d.AgreementDate)).getFullYear();
-                return cur_year>=allYears[x] && cur_year<allYears[y]? "inline":"none"});
+                return cur_year>=allYears[x] && cur_year<allYears[y]? "inline":"none"}); */
+        mapG.selectAll("circle").remove();
+        var filteredData = data.filter(function(d){
+          var cur_year = (new Date(d.AgreementDate)).getFullYear();
+          return  cur_year>=allYears[x] && cur_year<allYears[y]
+        });
+        contractCircles(filteredData)
+      }
+
+      function wordCloud(data){
+        
       }
 
     });
