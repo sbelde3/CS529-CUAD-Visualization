@@ -408,6 +408,7 @@ function getRandomData(ordinal = false) {
         data: getGroupData(i)
     })))
 
+
     //console.log(get_data())
     data_grp = get_data2()
 
@@ -790,6 +791,7 @@ function getRandomData(ordinal = false) {
     }
 ]
 ;
+
 
     //
 
