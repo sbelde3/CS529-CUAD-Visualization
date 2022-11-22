@@ -78,12 +78,21 @@
                 </div> -->
 
                 <div class="dropdown">
-                    <button class="dropbtn">Country</button>
+
+                  <div>
+                    <select id="select" class="dropbtn">
+                      <option value="all">Total Countries</option>
+                      <option value="usa">USA</option>
+                      <option value="uk">UK</option>
+                      <option value="africa">Africa</option>
+                    </select>
+                  </div>
+                    <!-- <button class="dropbtn">Country</button>
                     <div class="dropdown-content">
                       <a href="#">United States</a>
                       <a href="#">United Kindgom</a>
                       <a href="#">Africa</a>
-                    </div>
+                    </div> -->
                   </div>
             </li>
 
@@ -299,6 +308,7 @@
                     <div class="row">
 
                         <!-- Area Chart -->
+
                         <div class="col-xl-6 col-lg-2">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
@@ -307,6 +317,7 @@
                                     <h6 class="m-0 font-weight-bold text-primary">Missing Contracts Overview</h6>
                                 </div>
                                 <!-- Card Body -->
+
                                 <div class="card-body" style="height: 50vh;">
                                     <div class="chart-area">
                                       <a href="firstColumn.html">World Map Viz</a>
@@ -314,8 +325,8 @@
                                         <div id="viz" class="svg-container" style="margin: 0 auto;">
                                           <svg class = "svg-content-responsive" viewBox="0 0 960 500"></svg>
                                         </div>
-                                      </div>
-                                        <canvas id="myAreaChart"></canvas>
+                                      </div> -->
+                                        <!-- <canvas id="myAreaChart"></canvas> -->
                                     </div>
                                 </div>
                             </div>
@@ -342,6 +353,8 @@
                     <div  class="row">
 
                         <!-- Pie Chart -->
+
+
                         <div class="col-xl-12 col-lg-9">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
@@ -394,6 +407,54 @@
                         </div>
                     </div>
 
+                    <div class="row">
+
+                        <!-- Area Chart -->
+                        <!-- Pie Chart -->
+                        <div class="col-xl-6 col-lg-5">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Data Table</h6>
+                                    <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                            aria-labelledby="dropdownMenuLink">
+                                            <div class="dropdown-header">Dropdown Header:</div>
+                                            <a class="dropdown-item" href="#">Action</a>
+                                            <a class="dropdown-item" href="#">Another action</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">Something else here</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="timeline-viz">
+
+                                        <img id="data_table" width="350" height="300" src="fig/table-full.png" alt="abvcd">
+                                        <!-- <canvas id="myPieChart"></canvas> -->
+                                    </div>
+                                    <div class="mt-4 text-center small">
+                                        <!-- <span class="mr-2">
+                                            <i class="fas fa-circle text-primary"></i> Direct
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-success"></i> Social
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-info"></i> Referral
+                                        </span> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
             </div>
         </div>
     </div>
@@ -405,6 +466,29 @@
 
         console.log(srcImg)
         srcImg.src = "fig/timeline_viz.jpg"
+
+        const select = document.getElementById('select');
+
+        select.addEventListener('change', function handleChange(event) {
+          //val = console.log(event.target.value); //  get selected VALUE
+
+          if(event.target.value == 'all'){
+            const srcImg1  = document.getElementById('data_table');
+            srcImg1.src = "fig/table-full.png"
+          }
+          else if(event.target.value == 'usa'){
+            const srcImg1  = document.getElementById('data_table');
+            srcImg1.src = "fig/table-us.png"
+          }
+          else if(event.target.value == 'uk'){
+            const srcImg1  = document.getElementById('data_table');
+            srcImg1.src = "fig/table-uk.png"
+          }
+          else if(event.target.value == 'africa'){
+            const srcImg1  = document.getElementById('data_table');
+            srcImg1.src = "fig/table-africa.png"
+          }
+        });
 
         // d3.select(".abcd")
         //   .append("svg")
