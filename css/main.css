@@ -55,6 +55,7 @@
     opacity: 0.5;
     stroke-width: 0.1;
     stroke: #898989;
+    cursor: pointer;
 }
 
 .graticule {
@@ -64,7 +65,23 @@
     stroke-dasharray: 1,1;
   }
 
-.missing-counts{
+.year-wise-counts{
     fill: #3b5d75;
     /*opacity: 0.5; */
   }
+
+
+  .svg-container {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%; /* aspect ratio */
+    vertical-align: top;
+    overflow: hidden;
+}
+.svg-content-responsive {
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    left: 0;
+}
