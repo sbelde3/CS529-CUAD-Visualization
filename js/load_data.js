@@ -66,20 +66,17 @@ const plot_By_Country = function(contractsByCountryCsv) {
           return projection([d.lng, d.lat])[1];
         })
         .attr("r", function(d) {
-          return 3;
+          return 6;
         }).attr("class", "circles")
-        .attr("fill",function(d){return d.isMissing==="True"? "#3c813c":"#ff6161"})
+        .attr("fill",function(d){return d.isMissing==="False"? "#3c813c":"#ff6161"})
         //.style("display",function(d){return d.isMissing==="True"? "inline":"none"})
         .append('title').text(d=>d.Filename)
       }
     contractCircles(data)
 
-    function updateWordcloud(Filename){
-      console.log(Filename)
-    }
 
 
-      // ###### Adding Missing Fields BarPlot #######
+      // ###### Adding Contract Counts BarPlot #######
       var contractCounts = {}, //year Wise Counts
           dates = [],      margin = { top: 0, right: 0, bottom: 30, left: 20 },
           height = 150 - margin.top - margin.bottom,
@@ -190,8 +187,93 @@ const plot_By_Country = function(contractsByCountryCsv) {
         contractCircles(filteredData)
       }
 
-      function wordCloud(data){
-        
+
+      function wordCloud(terms,static_terms){
+
+        // set the dimensions and margins of the graph
+        var margin = {top: 10, right: 10, bottom: 10, left: 10},
+            width = 500 - margin.left - margin.right,
+            height = 500 - margin.top - margin.bottom;
+
+        // append the svg object to the body of the page
+        var svg = d3.select("#my_dataviz").append("svg").attr("id","wordcloud")
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+            .attr("transform",
+                  "translate(" + margin.left + "," + margin.top + ")");
+
+        // Constructs a new cloud layout instance. It run an algorithm to find the position of words that suits your requirements
+        // Wordcloud features that are different from one word to the other must be here
+        var layout = d3.layout.cloud()
+          .size([width, height])
+          .words(terms.map(function(d) { return {text: d.word, size:d.size,color: d.color}; }))
+          .padding(5)        //space between words
+          .rotate(function() { return ~~(Math.random() * 2) * 90; })
+          .fontSize(function(d) { return d.size; })      // font size of words
+          .on("end", draw);
+        layout.start();
+
+        // This function takes the output of 'layout' above and draw the words
+        // Wordcloud features that are THE SAME from one word to the other can be here
+        function draw(words) {
+          svg.append("g").selectAll("text")
+          .data(static_terms)
+          .enter().append("text")
+          .attr("text-anchor", "middle")
+          .style("font-family", "Impact")
+          .style("fill", function(d) { return d.color; })
+          .attr("transform", function(d) {
+            return "translate(" + [d.posX, d.posY] + ")";
+          })
+          .text(function(d) { return d.text; });
+          svg
+            .append("g")
+              .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
+              .selectAll("text")
+                .data(words)
+              .enter().append("text")
+                .style("font-size", function(d) { return d.size; })
+                .style("fill", function(d) { return d.color; })
+                .attr("text-anchor", "middle")
+                .style("font-family", "Impact")
+                .attr("transform", function(d) {
+                  return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                })
+                .text(function(d) { return d.text; });
+        }
+        return svg;
+      }
+      let terms = [{word: "ExpirationDate", size: "15",color:"#3c813c"}, 
+                  {word: "RenewalTerm", size: "15",color:"#3c813c"}, 
+                  {word: "NoticePeriod", size: "15",color:"#3c813c"}, 
+                  {word: "TOC", size: "15",color:"#3c813c"}]
+
+      let static_terms = [{text:"FileName",posX:"250",posY:"20",color:"#7288a3"},
+                          {text:"DocumentName",posX:"250",posY:"40",color:"#7288a3"},
+                          {text:"Party1",posX:"250",posY:"60",color:"#0a0a0a"},
+                           {text:"Party2",posX:"250",posY:"80",color:"#0a0a0a"},
+                           ]
+
+      wordCloud(terms,static_terms)
+
+      function updateWordcloud(Filename){
+        console.log(Filename)
+        let contractData = data.filter(function(d){
+          return d.Filename == Filename;
+        })
+        console.log(contractData)
+        let d = contractData[0];
+        d3.select("#wordcloud").remove(); 
+        terms = [{word: "ExpirationDate", size: "15",color: d.isExpDateMissing==="False"? "#3c813c":"#ff6161"}, 
+                  {word: "RenewalTerm", size: "15",color: d.isRenewalTermMissing==="False"? "#3c813c":"#ff6161"}, 
+                  {word: "NoticePeriod", size: "15",color: d.isNoticePeriodMissing==="False"? "#3c813c":"#ff6161"}, 
+                  {word: "TOC", size: "15",color: d.isTOC==="False"? "#3c813c":"#ff6161"} ]
+        static_terms = [{text:d.Filename,posX:"250",posY:"20",color:"#7288a3"},
+                        {text:d.documentName,posX:"250",posY:"40",color:"#7288a3"},
+                        {text:d.party1,posX:"250",posY:"60",color:"#0a0a0a"},
+                         {text:d.party2,posX:"250",posY:"80",color:"#0a0a0a"},]
+        wordCloud(terms,static_terms)
       }
 
     });
