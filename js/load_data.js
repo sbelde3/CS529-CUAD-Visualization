@@ -279,6 +279,7 @@ const plot_By_Country = function(contractsByCountryCsv) {
           }
         });
         wordCloud(cloud_terms)
+        d3.select("#network").remove();
         network(d.network)
       }
 
@@ -305,12 +306,12 @@ const plot_By_Country = function(contractsByCountryCsv) {
 
         console.log(dat)
         const margin = {top: 0, right: 0, bottom: 30, left: 0},
-        width = 300 - margin.left - margin.right,
-        height = 300 - margin.top - margin.bottom;
+        width = 400 - margin.left - margin.right,
+        height = 400 - margin.top - margin.bottom;
       
         // append the svg object to the body of the page
         const svg = d3.select("#my_dataviz")
-        .append("svg")
+        .append("svg").attr("id","network")
           .attr("width", width + margin.left + margin.right)
           .attr("height", height + margin.top + margin.bottom)
           //.attr("viewBox","0 0 300 300")
@@ -332,7 +333,7 @@ const plot_By_Country = function(contractsByCountryCsv) {
           .data(dat.nodes)
           .join("circle")
             .attr("r", 10)
-            .style("fill", "#93c9e5")
+            .style("fill", "#93c9e5");
       
         // Let's list the force we wanna apply on the network
         const simulation = d3.forceSimulation(dat.nodes)                 // Force algorithm is applied to data.nodes
@@ -341,7 +342,7 @@ const plot_By_Country = function(contractsByCountryCsv) {
                   .links(dat.links)                                    // and this the list of links
             )
             .force("charge", d3.forceManyBody().strength(-400))         // This adds repulsion between nodes. Play with the -400 for the repulsion strength
-            .force("center", d3.forceCenter(120, 20))     // This force attracts nodes to the center of the svg area
+            .force("center", d3.forceCenter(150, 50))     // This force attracts nodes to the center of the svg area
             .on("end", ticked);
       
         // This function is run at each iteration of the force algorithm, updating the nodes position.
@@ -354,7 +355,7 @@ const plot_By_Country = function(contractsByCountryCsv) {
       
           node
                .attr("cx", function (d) { return d.x+6; })
-               .attr("cy", function(d) { return d.y-6; });
+               .attr("cy", function(d) { return d.y-6; }).append('title').text(d => d.name);
         }
       }
 
