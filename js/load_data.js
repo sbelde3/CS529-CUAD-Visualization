@@ -37,9 +37,9 @@ const plot_By_Country = function(contractsByCountryCsv) {
 
 
     // For Zooming
-    /*map.call(d3.zoom().on('zoom', (event,d) => {
+    map.call(d3.zoom().on('zoom', (event,d) => {
           mapG.attr('transform', event.transform);
-        }));  */
+        })); 
 
     // Drawing the countries on globe
     mapG.selectAll('path')
@@ -128,10 +128,10 @@ const plot_By_Country = function(contractsByCountryCsv) {
       yAxisTicks = d3.axisLeft(yAxisValues)
       .ticks(10)
 
-
-      countsChart = map.append('g')
+      const barChart = d3.select("#viz2")
+      countsChart = barChart.append('g')
       .attr('transform',
-        'translate(' + margin.left + ',' + (480-height) + ')')
+        'translate(' + margin.left + ',' + (10) + ')')
       .selectAll('rect').data(yearWiseCounts)
       .enter().append('rect')
         .attr("class","year-wise-counts")
@@ -147,12 +147,12 @@ const plot_By_Country = function(contractsByCountryCsv) {
 
         
 
-      yGuide = map.append('g')
-        .attr('transform', 'translate(20,'+(height+240)+')')
+      yGuide = barChart.append('g')
+        .attr('transform', 'translate(20,'+(10)+')')
         .call(yAxisTicks)
 
-      xGuide = map.append('g')
-        .attr('transform', 'translate(20,'+ (height+360) + ')')
+      xGuide = barChart.append('g')
+        .attr('transform', 'translate(20,'+ (height+10) + ')')
         .call(xAxisTicks.ticks(25))
 
       countsChart.transition()
@@ -168,8 +168,8 @@ const plot_By_Country = function(contractsByCountryCsv) {
       .duration(500)
       .ease(d3.easeBounceOut);
 
-      map.call(d3.brushX()
-                  .extent([ [20,480-height], [960,480] ])
+      barChart.call(d3.brushX()
+                  .extent([ [20,10], [960,10+height] ])
                   .on("start end", updateMap))
       
       function updateMap(extent){
@@ -188,11 +188,11 @@ const plot_By_Country = function(contractsByCountryCsv) {
       }
 
 
-      function wordCloud(terms,static_terms){
+      function wordCloud(terms){
 
         // set the dimensions and margins of the graph
-        var margin = {top: 10, right: 10, bottom: 10, left: 10},
-            width = 500 - margin.left - margin.right,
+        var margin = {top: 0, right: 10, bottom: 10, left: 10},
+            width = 400 - margin.left - margin.right,
             height = 400 - margin.top - margin.bottom;
 
         // append the svg object to the body of the page
@@ -218,7 +218,7 @@ const plot_By_Country = function(contractsByCountryCsv) {
         // Wordcloud features that are THE SAME from one word to the other can be here
         function draw(words) {
           svg.append("g").selectAll("text")
-          .data(static_terms)
+          .data(terms)
           .enter().append("text")
           .attr("text-anchor", "middle")
           .style("font-family", "Impact")
@@ -227,35 +227,34 @@ const plot_By_Country = function(contractsByCountryCsv) {
             return "translate(" + [d.posX, d.posY] + ")";
           })
           .text(function(d) { return d.text; });
+
           svg
-            .append("g")
-              .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
-              .selectAll("text")
-                .data(words)
-              .enter().append("text")
-                .style("font-size", function(d) { return d.size; })
-                .style("fill", function(d) { return d.color; })
-                .attr("text-anchor", "middle")
-                .style("font-family", "Impact")
-                .attr("transform", function(d) {
-                  return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-                })
-                .text(function(d) { return d.text; });
+          .append("g")
+            .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
+            .selectAll("text")
+              .data(words)
+            .enter().append("text")
+              .style("font-size", function(d) { return d.size; })
+              .style("fill", function(d) { return d.color; })
+              .attr("text-anchor", "middle")
+              .style("font-family", "Impact")
+              .attr("transform", function(d) {
+                return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+              })
+              .text(function(d) { return d.text; });
         }
         return svg;
       }
-      let terms = [{word: "ExpirationDate", size: "15",color:"#3c813c"}, 
-                  {word: "RenewalTerm", size: "15",color:"#3c813c"}, 
-                  {word: "NoticePeriod", size: "15",color:"#3c813c"}, 
-                  {word: "TOC", size: "15",color:"#3c813c"}]
+      let terms = [{text: "ExpirationDate", size: "15",color:"#ff6161",posX:300,posY:110}, 
+                  {text: "RenewalTerm", size: "15",color:"#3c813c",posX:100,posY:110}, 
+                  {text: "NoticePeriod", size: "15",color:"#ff6161",posX:300,posY:140}, 
+                  {text: "TOC", size: "15",color:"#3c813c",posX:100,posY:140},
+                  {text:"FileName",posX:"200",posY:"20",color:"rgb(0 111 247)"},
+                  {text:"DocumentName",posX:"200",posY:"40",color:"#7288a3"},
+                  {text:"Party1",posX:"200",posY:"60",color:"rgb(165 151 73 / 66%)"},
+                   {text:"Party2",posX:"200",posY:"80",color:"rgb(165 151 73 / 66%)"}]
 
-      let static_terms = [{text:"FileName",posX:"250",posY:"20",color:"rgb(0 111 247)"},
-                          {text:"DocumentName",posX:"250",posY:"40",color:"#7288a3"},
-                          {text:"Party1",posX:"250",posY:"60",color:"rgb(165 151 73 / 66%)"},
-                           {text:"Party2",posX:"250",posY:"80",color:"rgb(165 151 73 / 66%)"},
-                           ]
-
-      wordCloud(terms,static_terms)
+      wordCloud(terms)
 
       function updateWordcloud(Filename){
         console.log(Filename)
@@ -265,15 +264,25 @@ const plot_By_Country = function(contractsByCountryCsv) {
         console.log(contractData)
         let d = contractData[0];
         d3.select("#wordcloud").remove(); 
-        terms = [{word: "ExpirationDate", size: "15",color: d.isExpDateMissing==="False"? "#3c813c":"#ff6161"}, 
-                  {word: "RenewalTerm", size: "15",color: d.isRenewalTermMissing==="False"? "#3c813c":"#ff6161"}, 
-                  {word: "NoticePeriod", size: "15",color: d.isNoticePeriodMissing==="False"? "#3c813c":"#ff6161"}, 
-                  {word: "TOC", size: "15",color: d.isTOC==="False"? "#3c813c":"#ff6161"} ]
-        static_terms = [{text:d.Filename,posX:"250",posY:"20",color:"rgb(0 111 247)"},
-                        {text:d.documentName,posX:"250",posY:"40",color:"#7288a3"},
-                        {text:d.party1,posX:"250",posY:"60",color:"rgb(165 151 73 / 66%)"},
-                         {text:d.party2,posX:"250",posY:"80",color:"rgb(165 151 73 / 66%)"},]
-        wordCloud(terms,static_terms)
+        terms = {"ExpirationDate":d.isExpDateMissing,"RenewalTerm":d.isRenewalTermMissing,
+                          "NoticePeriod":d.isNoticePeriodMissing,"TOC":d.isTOC}
+        var cloud_terms = [{text:d.Filename,posX:"200",posY:"20",color:"rgb(0 111 247)"},
+                             {text:d.documentName,posX:"200",posY:"40",color:"#7288a3"},
+                              {text:d.party1,posX:"200",posY:"60",color:"rgb(165 151 73 / 66%)"},
+                              {text:d.party2,posX:"200",posY:"80",color:"rgb(165 151 73 / 66%)"},]
+        let posY_missing = 110
+        let posY_non_missing = 110
+        Object.keys(terms).forEach(function(key) {
+          if (terms[key] === "False"){
+            cloud_terms.push({text:key,size:"15",color:"#3c813c",posX:100,posY:posY_non_missing});
+            posY_non_missing = posY_non_missing+30;
+          }
+          else{
+            cloud_terms.push({text:key,size:"15",color:"#ff6161",posX:300,posY:posY_missing});
+            posY_missing = posY_missing+30;
+          }
+        });
+        wordCloud(cloud_terms)
       }
 
     });
