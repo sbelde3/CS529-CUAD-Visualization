@@ -12,7 +12,7 @@ function get_data2(){
         MAXLINES = 5,
         MAXSEGMENTS = 5,
         MAXCATEGORIES = 4,
-        MINTIME = new Date(2013,2,21);
+        MINTIME = new Date(2015,2,21);
 
         const nCategories = 5,
             categoryLabels = ['Contract_Signing','Contract_Negotiation','Contract_Re_Negotiation','Contract_Relapse','Contract_Expiry'];

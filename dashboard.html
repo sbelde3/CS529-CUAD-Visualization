@@ -390,7 +390,7 @@
                                         <script>
                                             TimelinesChart()
                                                 .data(getRandomData(true))
-                                                .width(700)
+                                                .width(window.innerWidth - window.innerWidth/4)
                                                 .zQualitative(true)
                                                 (document.getElementById('myPlot'));
                                         </script>
@@ -441,7 +441,7 @@
                                 <div class="card-body">
                                     <div id = "test">
                                         <a href="tabletest.html">Table</a>
-                                        
+
                                         <img id="data_table" width="350" height="300" src="fig/table-full.png" alt="abvcd">
                                         <!-- <canvas id="myPieChart"></canvas> -->
                                     </div>
