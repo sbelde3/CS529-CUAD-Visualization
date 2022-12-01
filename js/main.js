@@ -17,5 +17,6 @@ var contractsByCountryCsv = "data/Contracts_MissingFields_info.csv";
         const data = new plot_By_Country(contractsByCountryCsv);
 
     };
+    
 
 }) ();
