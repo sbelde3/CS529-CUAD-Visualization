@@ -18,6 +18,7 @@
 
     <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/holtzy/D3-graph-gallery@master/LIB/d3.layout.cloud.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
     <script  src="js/load_data.js"></script>
     <script src="js/main.js"></script>
 
@@ -318,14 +319,19 @@
                                 <!-- Card Header - Dropdown -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Missing Contracts Overview</h6>
+                                    <h5 class="m-0 font-weight-bold text-primary" id="mapHeading" style="text-align: center;">Displaying all the Contracts with start year between 1992-2020</h5>
                                 </div>
                                 <!-- Card Body -->
 
-                                <div class="card-body" style="height: 60vh;padding: 0;">
-                                    <div class="chart-area" style="height: 19rem;">
+                                <div class="card-body" style="height: 70vh;padding: 0;">
+                          <!--           <h6>Contract Group : <select onchange="doSomething();">
+                                        <option>A</option>
+                                        <option>B</option>
+                                        <option>C</option>
+                                      </select></h6> -->
+                                    <div id="mapdiv" class="chart-area" style="height: 19rem;">
                                       <div class="container" style="display: flex;justify-content: center;height: 50vh;">
-                                        <div id="viz" class="svg-container" style="margin: 0 auto;height: 60vh;">
+                                        <div id="map_viz" class="svg-container" style="margin: 0 auto;height: 60vh;">
                                           <svg class = "svg-content-responsive" viewBox="0 0 960 500"></svg>
                                         </div>
                                       </div>
@@ -334,7 +340,7 @@
                                     <div class="chart-area" style="height: 23rem;">
                                         <div class="container" style="display: flex;justify-content: center;height: 50vh;">
                                           <div class=" svg-container" style="margin: 0 auto;">
-                                              <svg id="viz2"  class = "svg-content-responsive" viewBox="0 0 960 500"></svg>
+                                              <svg id="bar_viz"  class = "svg-content-responsive" viewBox="0 0 960 500"></svg>
                                           </div>
                                         </div>
                                           <!-- <canvas id="myAreaChart"></canvas> -->
@@ -353,13 +359,26 @@
                                 <div class="card-body" style="height: 30vh;padding: 0;">
                                     <div class="chart-area">
                                       <div class="container" style="display: flex;justify-content: center;">
-                                        <div id="my_dataviz"></div>
+                                        <div id="wordcloud_viz"></div>
                                       </div>
-                                        <canvas id="myAreaChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Percentage of Critical Contracts</h6>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body" style="height: 30vh;padding: 0;">
+                                    <div class="chart-area">
+                                        <div id="my_dataviz"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        
                     </div>
                     <div  class="row">
 
@@ -392,8 +411,7 @@
                                     <div class="timeline-viz">
                                         <a href="thirdColumn.html">Time line dummy</a>
                                         <!-- <img id="timeline" width="350" height="300" src="fig/timeline_viz.jpg" alt="abvcd"> -->
-                                        <div id="myPlot" ></div>
-
+                                        <div id="myPlot"></div>
                                         <script>
                                             TimelinesChart()
                                                 .data(getRandomData(true))

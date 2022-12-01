@@ -52,9 +52,19 @@ const plot_By_Country = function(contractsByCountryCsv) {
 
 
     // Loading the contracts on the world map as circles
+
+    //console.log(data)
+
     d3.csv(contractsByCountryCsv).then ((data) =>{
-      //console.log(data)
+
       function contractCircles(data){
+        var tooltip = d3.select('#mapdiv')
+                        .append('div')
+                        .style('position', 'absolute')
+                        .style('padding', '0 10px')
+                        .style('background', 'white')
+                        .style('opacity', 0);
+
         mapG.selectAll("circle")
         .data(data)
         .enter()
@@ -69,8 +79,29 @@ const plot_By_Country = function(contractsByCountryCsv) {
           return 6;
         }).attr("class", "circles")
         .attr("fill",function(d){return d.isMissing==="False"? "#3c813c":"#ff6161"})
+        .on('mouseover', function(event,d) {
+            const [x, y] = d3.pointer(event);
+            tooltip.transition().duration(200)
+              .style('opacity', .9)
+            tooltip.html(
+              '<div style="font-size: 1rem; font-weight: bold">' +
+                d.Filename + '&deg;</div>'
+            )
+            .style('left', (x-50) + 'px')
+            .style('top', (y-50) + 'px')
+          tempColor = this.style.fill;
+          d3.select(this)
+            .style('fill', 'yellow')
+        })
+  
+        .on('mouseout', function(d) {
+          tooltip.html('')
+          d3.select(this)
+            .style('fill', tempColor)
+        })
         //.style("display",function(d){return d.isMissing==="True"? "inline":"none"})
-        .append('title').text(d=>d.Filename)
+        //.append('title').text(d=>d.Filename)
+
       }
     contractCircles(data)
 
@@ -128,7 +159,7 @@ const plot_By_Country = function(contractsByCountryCsv) {
       yAxisTicks = d3.axisLeft(yAxisValues)
       .ticks(10)
 
-      const barChart = d3.select("#viz2")
+      const barChart = d3.select("#bar_viz")
       countsChart = barChart.append('g')
       .attr('transform',
         'translate(' + margin.left + ',' + (10) + ')')
@@ -175,10 +206,7 @@ const plot_By_Country = function(contractsByCountryCsv) {
       function updateMap(extent){
         const x =Math.floor(((extent.selection[0]-20)*allYears.length)/960);
         const y =Math.floor(((extent.selection[1]-1)*allYears.length)/960);
-        /*mapG.selectAll("circle").on('click',d=>console.log(d))
-              .style("display",function(d){
-                var cur_year = (new Date(d.AgreementDate)).getFullYear();
-                return cur_year>=allYears[x] && cur_year<allYears[y]? "inline":"none"}); */
+        document.getElementById("mapHeading").innerHTML = "Displaying all the Contracts with start year between "+allYears[x]+"-"+allYears[y];
         mapG.selectAll("circle").remove();
         var filteredData = data.filter(function(d){
           var cur_year = (new Date(d.AgreementDate)).getFullYear();
@@ -196,7 +224,7 @@ const plot_By_Country = function(contractsByCountryCsv) {
             height = 400 - margin.top - margin.bottom;
 
         // append the svg object to the body of the page
-        var svg = d3.select("#my_dataviz").append("svg").attr("id","wordcloud")
+        var svg = d3.select("#wordcloud_viz").append("svg").attr("id","wordcloud")
           .attr("width", width + margin.left + margin.right)
           .attr("height", height + margin.top + margin.bottom)
           .append("g")
@@ -257,11 +285,9 @@ const plot_By_Country = function(contractsByCountryCsv) {
       wordCloud(terms)
 
       function updateWordcloud(Filename){
-        console.log(Filename)
         let contractData = data.filter(function(d){
           return d.Filename == Filename;
         })
-        console.log(contractData)
         let d = contractData[0];
         d3.select("#wordcloud").remove(); 
         terms = {"ExpirationDate":d.isExpDateMissing,"RenewalTerm":d.isRenewalTermMissing,
@@ -284,10 +310,9 @@ const plot_By_Country = function(contractsByCountryCsv) {
         });
         wordCloud(cloud_terms)
       }
-
     });
 
-  });
+  });  
 
   self.public = {
     val :10
