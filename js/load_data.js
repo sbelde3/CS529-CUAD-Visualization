@@ -56,7 +56,6 @@ const plot_By_Country = function(contractsByCountryCsv) {
     //console.log(data)
 
     d3.csv(contractsByCountryCsv).then ((data) =>{
-
       function contractCircles(data){
         var tooltip = d3.select('#mapdiv')
                         .append('div')
@@ -103,7 +102,7 @@ const plot_By_Country = function(contractsByCountryCsv) {
         //.append('title').text(d=>d.Filename)
 
       }
-    contractCircles(data)
+      contractCircles(data)
 
 
 
@@ -230,21 +229,8 @@ const plot_By_Country = function(contractsByCountryCsv) {
           .append("g")
             .attr("transform",
                   "translate(" + margin.left + "," + margin.top + ")");
-
-        // Constructs a new cloud layout instance. It run an algorithm to find the position of words that suits your requirements
-        // Wordcloud features that are different from one word to the other must be here
-        var layout = d3.layout.cloud()
-          .size([width, height])
-          .words(terms.map(function(d) { return {text: d.word, size:d.size,color: d.color}; }))
-          .padding(5)        //space between words
-          .rotate(function() { return ~~(Math.random() * 2) * 90; })
-          .fontSize(function(d) { return d.size; })      // font size of words
-          .on("end", draw);
-        layout.start();
-
         // This function takes the output of 'layout' above and draw the words
         // Wordcloud features that are THE SAME from one word to the other can be here
-        function draw(words) {
           svg.append("g").selectAll("text")
           .data(terms)
           .enter().append("text")
@@ -255,22 +241,6 @@ const plot_By_Country = function(contractsByCountryCsv) {
             return "translate(" + [d.posX, d.posY] + ")";
           })
           .text(function(d) { return d.text; });
-
-          svg
-          .append("g")
-            .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
-            .selectAll("text")
-              .data(words)
-            .enter().append("text")
-              .style("font-size", function(d) { return d.size; })
-              .style("fill", function(d) { return d.color; })
-              .attr("text-anchor", "middle")
-              .style("font-family", "Impact")
-              .attr("transform", function(d) {
-                return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-              })
-              .text(function(d) { return d.text; });
-        }
         return svg;
       }
       let terms = [{text: "ExpirationDate", size: "15",color:"#ff6161",posX:300,posY:110}, 
@@ -309,7 +279,86 @@ const plot_By_Country = function(contractsByCountryCsv) {
           }
         });
         wordCloud(cloud_terms)
+        network(d.network)
       }
+
+      function network(dat){
+        //dat = '"'+dat+'"'
+        //dat = dat.replaceAll(" ","")
+        //dat = new Object(dat)
+        
+        dat = JSON.parse(dat)
+        //dat = new Object(dat)
+        /*console.log(dat)
+        dat = {"nodes":[{'id': 0, 'name': 'CybergyHoldingsInc_20140520'},
+        {'id': 41, 'name': 'VnueInc_20150914'},
+        {'id': 318, 'name': 'TRIZETTOGROUPINC_08'},
+        {'id': 31, 'name': 'HerImports_20161018'},
+        {'id': 247, 'name': 'TURNKEYCAPITAL,INC_07'},
+        {'id': 286, 'name': 'ADAMSGOLFINC_03'}],"links":[{'source': 286, 'target': 31},
+        {'source': 41, 'target': 0},
+        {'source': 247, 'target': 286},
+        {'source': 286, 'target': 31},
+        {'source': 41, 'target': 247},
+        {'source': 247, 'target': 0}]} */
+        // set the dimensions and margins of the graph
+
+        console.log(dat)
+        const margin = {top: 0, right: 0, bottom: 30, left: 0},
+        width = 300 - margin.left - margin.right,
+        height = 300 - margin.top - margin.bottom;
+      
+        // append the svg object to the body of the page
+        const svg = d3.select("#my_dataviz")
+        .append("svg")
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", height + margin.top + margin.bottom)
+          //.attr("viewBox","0 0 300 300")
+        .append("g")
+          .attr("transform",
+                `translate(${margin.left}, ${margin.top})`);
+      
+      
+        // Initialize the links
+        const link = svg
+          .selectAll("line")
+          .data(dat.links)
+          .join("line")
+            .style("stroke", "#aaa")
+      
+        // Initialize the nodes
+        const node = svg
+          .selectAll("circle")
+          .data(dat.nodes)
+          .join("circle")
+            .attr("r", 10)
+            .style("fill", "#93c9e5")
+      
+        // Let's list the force we wanna apply on the network
+        const simulation = d3.forceSimulation(dat.nodes)                 // Force algorithm is applied to data.nodes
+            .force("link", d3.forceLink()                               // This force provides links between nodes
+                  .id(function(d) { return d.id; })                     // This provide  the id of a node
+                  .links(dat.links)                                    // and this the list of links
+            )
+            .force("charge", d3.forceManyBody().strength(-400))         // This adds repulsion between nodes. Play with the -400 for the repulsion strength
+            .force("center", d3.forceCenter(120, 20))     // This force attracts nodes to the center of the svg area
+            .on("end", ticked);
+      
+        // This function is run at each iteration of the force algorithm, updating the nodes position.
+        function ticked() {
+          link
+              .attr("x1", function(d) { return d.source.x; })
+              .attr("y1", function(d) { return d.source.y; })
+              .attr("x2", function(d) { return d.target.x; })
+              .attr("y2", function(d) { return d.target.y; });
+      
+          node
+               .attr("cx", function (d) { return d.x+6; })
+               .attr("cy", function(d) { return d.y-6; });
+        }
+      }
+
+      network(data[0]["network"]);
     });
 
   });  
