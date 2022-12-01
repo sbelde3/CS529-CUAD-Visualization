@@ -161,7 +161,7 @@ const plot_By_Country = function(contractsByCountryCsv) {
       const barChart = d3.select("#bar_viz")
       countsChart = barChart.append('g')
       .attr('transform',
-        'translate(' + margin.left + ',' + (10) + ')')
+        'translate(' + margin.left + ',' + (100) + ')')
       .selectAll('rect').data(yearWiseCounts)
       .enter().append('rect')
         .attr("class","year-wise-counts")
@@ -178,11 +178,11 @@ const plot_By_Country = function(contractsByCountryCsv) {
         
 
       yGuide = barChart.append('g')
-        .attr('transform', 'translate(20,'+(10)+')')
+        .attr('transform', 'translate(20,'+(100)+')')
         .call(yAxisTicks)
 
       xGuide = barChart.append('g')
-        .attr('transform', 'translate(20,'+ (height+10) + ')')
+        .attr('transform', 'translate(20,'+ (height+100) + ')')
         .call(xAxisTicks.ticks(25))
 
       countsChart.transition()
@@ -199,7 +199,7 @@ const plot_By_Country = function(contractsByCountryCsv) {
       .ease(d3.easeBounceOut);
 
       barChart.call(d3.brushX()
-                  .extent([ [20,10], [960,10+height] ])
+                  .extent([ [20,100], [960,100+height] ])
                   .on("start end", updateMap))
       
       function updateMap(extent){
@@ -342,7 +342,7 @@ const plot_By_Country = function(contractsByCountryCsv) {
                   .links(dat.links)                                    // and this the list of links
             )
             .force("charge", d3.forceManyBody().strength(-400))         // This adds repulsion between nodes. Play with the -400 for the repulsion strength
-            .force("center", d3.forceCenter(150, 50))     // This force attracts nodes to the center of the svg area
+            .force("center", d3.forceCenter(150, 80))     // This force attracts nodes to the center of the svg area
             .on("end", ticked);
       
         // This function is run at each iteration of the force algorithm, updating the nodes position.
