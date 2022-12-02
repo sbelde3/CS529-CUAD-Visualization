@@ -3,7 +3,8 @@
 /* Get or create the application global variable */
 var App = App || {};
 
-var contractsByCountryCsv = "./data/Contracts_By_Geo_Date_Missing_Counts.csv";
+var contractsByCountryCsv = "data/Contracts_MissingFields_info.csv";
+
 /* IIFE to initialize the main entry of the application*/
 (function() {
 
@@ -17,5 +18,6 @@ var contractsByCountryCsv = "./data/Contracts_By_Geo_Date_Missing_Counts.csv";
         const data = new plot_By_Country(contractsByCountryCsv);
 
     };
+    
 
 }) ();
