@@ -4,6 +4,7 @@
 var App = App || {};
 
 var contractsByCountryCsv = "data/Contracts_MissingFields_info.csv";
+
 /* IIFE to initialize the main entry of the application*/
 (function() {
 
