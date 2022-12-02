@@ -1,34 +1,332 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>CUAD Visualization</title>
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/main.css" rel="stylesheet">
-    
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <!-- <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css"> -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="css/bootstrapV4.6.css" rel="stylesheet">
     <script src="lib/d3.min.js"></script>
 
-  </head>
-  <body>
-    <div class="title"><h2 >Visualization of CUAD - A Dataset for Legal Contract Review</h2></div>
-    <br>
-    <div class="container">
-        <div class="row row-full" >
-          <div class="col-md-4" id="firstColumn">
-            Sunil
-            <a href="firstColumn.html">First Column</a>
-          </div>
-          <div class="col-md-4" id="secondColumn">
-            Rohan
-            <a href="dashboard.html">Dashboard</a>
-            <a href="tabletest.html">Table test</a>
-          </div>
-          <div class="col-md-4" id="thirdColumn">
-            Vivek
-            <a href="thirdColumn.html">Third Column</a>
-          </div>
+    <link href="css/filter.css" rel="stylesheet">
+
+    <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/holtzy/D3-graph-gallery@master/LIB/d3.layout.cloud.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <script  src="js/load_viz.js"></script>
+    <script src="js/main.js"></script>
+
+    <script src="js/table.js"></script>
+
+    <script src="//unpkg.com/timelines-chart@2"></script>
+  	<script src="js/timeline.js"></script>
+
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+</head>
+<body id="page-top"  onload="App.start();">
+    <div id="wrapper">
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-laugh-wink"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">CUAD VISUALIZATION</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="index.html">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                FILTERS
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+
+
+
+                <div class="dropdown">
+
+                  <div>
+                    <select id="select" class="dropbtn">
+                      <option value="all">Total Countries</option>
+                      <option value="usa">USA</option>
+                      <option value="uk">UK</option>
+                      <option value="africa">Africa</option>
+                    </select>
+                  </div>
+                    <!-- <button class="dropbtn">Country</button>
+                    <div class="dropdown-content">
+                      <a href="#">United States</a>
+                      <a href="#">United Kindgom</a>
+                      <a href="#">Africa</a>
+                    </div> -->
+                  </div>
+            </li>
+
+            <!-- Nav Item - Utilities Collapse Menu -->
+            <li class="nav-item">
+                <div class="boxes">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault">
+                      Marketing Affiliated
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
+                    <label class="form-check-label" for="flexCheckChecked">
+                      Video on Demand
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
+                    <label class="form-check-label" for="flexCheckChecked">
+                      Content Distribution License
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
+                    <label class="form-check-label" for="flexCheckChecked">
+                      Website Content License
+                    </label>
+                  </div>
+                </div>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <!-- <div class="sidebar-heading">
+                Addons
+            </div> -->
+
+
+            <div class="sidebar-heading">
+                YEAR FILTER
+            </div>
+            <!-- Nav Item - Charts -->
+            <li class="nav-item">
+                    <div class="dropdown">
+                        <button class="dropbtn">Start Year</button>
+                        <div class="dropdown-content">
+                          <a href="#">2015</a>
+                          <a href="#">2016</a>
+                          <a href="#">2017</a>
+                          <a href="#">2018</a>
+                          <a href="#">2019</a>
+                          <a href="#">2020</a>
+                        </div>
+                      </div>
+            </li>
+
+            <li class="nav-item">
+                <div class="dropdown">
+                    <button class="dropbtn">End Year</button>
+                    <div class="dropdown-content">
+                        <a href="#">2015</a>
+                        <a href="#">2016</a>
+                        <a href="#">2017</a>
+                        <a href="#">2018</a>
+                        <a href="#">2019</a>
+                        <a href="#">2020</a>
+                    </div>
+                  </div>
+        </li>
+        <a href="/Users/dpistudent22/Desktop/CS-529/CS529-CUAD-Visualization/CUAD_SAMPLE.xlsx" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
+        download="CUAD_SAMPLE.xlsx"><i
+                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+
+
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+        </ul>
+
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <div class="container-fluid">
+
+                    <!-- Content Row -->
+
+                    <div class="row">
+
+                        <!-- Area Chart -->
+
+                        <div class="col-xl-8 col-lg-2">
+                            <div class="card shadow mb-2">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h5 class="m-0 font-weight-bold text-primary" id="mapHeading" style="text-align: center;">Displaying all the Contracts with start year between 1992-2020</h5>
+                                </div>
+                                <!-- Card Body -->
+
+                                <div class="card-body" style="height: 66vh;padding: 0;">
+     
+                                    <div id="mapdiv" class="chart-area" style="height: 19rem;">
+                                      <div class="container" style="display: flex;justify-content: center;height: 50vh;">
+                                        <div id="map_viz" class="svg-container" style="margin: 0 auto;height: 60vh;">
+                                          <svg class = "svg-content-responsive" viewBox="0 0 960 500"></svg>
+                                        </div>
+                                      </div>
+                                        <!-- <canvas id="myAreaChart"></canvas> -->
+                                    </div>
+                                    <div class="chart-area" style="height: 16rem;">
+                                        <div class="container" style="display: flex;justify-content: center;height: 60vh;">
+                                          <div class=" svg-container" style="margin: 0 auto;">
+                                              <svg id="bar_viz"  class = "svg-content-responsive" viewBox="0 0 960 500"></svg>
+                                          </div>
+                                        </div>
+                                          <!-- <canvas id="myAreaChart"></canvas> -->
+                                      </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-lg-2">
+                            <div class="card shadow mb-2">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Missing Terms WordCloud</h6>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body" style="height: 30vh;padding: 0;">
+                                    <div class="chart-area">
+                                      <div class="container" style="display: flex;justify-content: center;">
+                                        <div id="wordcloud_viz"></div>
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Lineage of the Contract</h6>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body" style="height: 30vh;padding: 0;">
+                                    <div class="chart-area">
+                                        <div class="container" style="display: flex;justify-content: center;">
+                                            <div id="my_dataviz"></div>
+                                            <script>
+
+                                                
+                                                </script>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div  class="row">
+
+                        <!-- Pie Chart -->
+
+
+                        <div class="col-xl-12 col-lg-9">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">TimeLine</h6>
+                                    <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                            aria-labelledby="dropdownMenuLink">
+                                            <div class="dropdown-header">Dropdown Header:</div>
+                                            <a class="dropdown-item" href="#">Action</a>
+                                            <a class="dropdown-item" href="#">Another action</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">Something else here</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body" style="width: 100vh;">
+                                    <div class="timeline-viz">
+                                        
+                                        <div id="myPlot"></div>
+                                        <script>
+                                            TimelinesChart()
+                                                .data(getRandomData(true))
+                                                .width(window.innerWidth - window.innerWidth/6)
+                                                .zQualitative(true)
+                                                (document.getElementById('myPlot'));
+                                        </script>
+                                    </div>
+                                    <div class="mt-4 text-center small">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+            </div>
         </div>
-      </div>
-  </body>
+    </div>
+
+
+    <script>
+
+        const srcImg  = document.getElementById('timeline');
+
+        console.log(srcImg)
+        srcImg.src = "fig/timeline_viz.jpg"
+
+        const select = document.getElementById('select');
+
+        select.addEventListener('change', function handleChange(event) {
+          //val = console.log(event.target.value); //  get selected VALUE
+
+          if(event.target.value == 'all'){
+            const srcImg1  = document.getElementById('data_table');
+            srcImg1.src = "fig/table-full.png"
+          }
+          else if(event.target.value == 'usa'){
+            const srcImg1  = document.getElementById('data_table');
+            srcImg1.src = "fig/table-us.png"
+          }
+          else if(event.target.value == 'uk'){
+            const srcImg1  = document.getElementById('data_table');
+            srcImg1.src = "fig/table-uk.png"
+          }
+          else if(event.target.value == 'africa'){
+            const srcImg1  = document.getElementById('data_table');
+            srcImg1.src = "fig/table-africa.png"
+          }
+        });
+    </script>
+</body>
 </html>
